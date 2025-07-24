@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SaaS Analytics Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+            padding: 10px;
+            border-radius: 50%;
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bg-purple {
+            background-color: #7c3aed;
+        }
+
+        .bg-blue {
+            background-color: #2563eb;
+        }
+
+        .bg-green {
+            background-color: #10b981;
+        }
+
+        .bg-red {
+            background-color: #ef4444;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container py-5">
+        <div class="d-flex flex-col">
+
+            <div class="mb-4">
+                <h2 class="fw-bold">SaaS Analytics</h2>
+            </div>
+            <div class="form-check form-switch ms-auto">
+                <input class="form-check-input" type="checkbox" role="switch" id="darkToggleSwitch" />
+                <label class="form-check-label" for="darkToggleSwitch">
+                    <i class="bi bi-moon-fill" id="toggleIcon"></i>
+                </label>
+            </div>
+        </div>
+
+        <!-- Metrics Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card p-3 shadow-sm">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="card-icon bg-purple"><i class="bi bi-currency-dollar"></i></div>
+                        <div>
+                            <div class="text-muted small">Monthly Recurring</div>
+                            <div class="fs-5 fw-bold">$12,480</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card p-3 shadow-sm">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="card-icon bg-blue"><i class="bi bi-people"></i></div>
+                        <div>
+                            <div class="text-muted small">Active Users</div>
+                            <div class="fs-5 fw-bold">320</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card p-3 shadow-sm">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="card-icon bg-green"><i class="bi bi-graph-up-arrow"></i></div>
+                        <div>
+                            <div class="text-muted small">Growth Rate</div>
+                            <div class="fs-5 fw-bold">8.2%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card p-3 shadow-sm">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="card-icon bg-red"><i class="bi bi-clock-history"></i></div>
+                        <div>
+                            <div class="text-muted small">Avg. Session</div>
+                            <div class="fs-5 fw-bold">3m 45s</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card shadow-sm p-3">
+                    <h6 class="fw-bold mb-3">MRR Trend</h6>
+                    <canvas id="mrrChart" height="300"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-sm p-3">
+                    <h6 class="fw-bold mb-3">User Signups</h6>
+                    <canvas id="signupChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Users Table -->
+        <div class="card shadow-sm p-3">
+            <h6 class="fw-bold mb-3">Recent Users</h6>
+            <div class="table-responsive">
+                <table class="table table-borderless align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Plan</th>
+                            <th>Joined</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Alice</td>
+                            <td>alice@example.com</td>
+                            <td>Pro</td>
+                            <td>2025-07-01</td>
+                        </tr>
+                        <tr>
+                            <td>Bob</td>
+                            <td>bob@example.com</td>
+                            <td>Basic</td>
+                            <td>2025-07-10</td>
+                        </tr>
+                        <tr>
+                            <td>Charlie</td>
+                            <td>charlle@example.com</td>
+                            <td>Pro</td>
+                            <td>2025-07-15</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart Scripts -->
+    <script>
+        const mrrCtx = document.getElementById('mrrChart').getContext('2d');
+        new Chart(mrrCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                datasets: [{
+                    label: 'MRR ($)',
+                    data: [3000, 5000, 7000, 9000, 11000, 12500, 14500],
+                    borderColor: '#6366f1',
+                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        const signupCtx = document.getElementById('signupChart').getContext('2d');
+        new Chart(signupCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7'],
+                datasets: [{
+                    label: 'Signups',
+                    data: [100, 130, 150, 180, 140, 170, 140],
+                    backgroundColor: '#3b82f6'
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    </script>
+    <script>
+        const toggleSwitch = document.getElementById("darkToggleSwitch");
+        const toggleIcon = document.getElementById("toggleIcon");
+
+        toggleSwitch.addEventListener("change", () => {
+            const isDark = document.body.classList.toggle("bg-dark");
+            document.body.classList.toggle("text-light");
+
+            // Cards
+            document.querySelectorAll(".card").forEach(card => {
+                card.classList.toggle("bg-dark");
+                card.classList.toggle("text-light");
+                card.classList.toggle("border-light");
+
+                // Fix for muted text being invisible
+                card.querySelectorAll(".text-muted").forEach(el => {
+                    if (isDark) {
+                        el.classList.remove("text-muted");
+                        el.classList.add("text-secondary");
+                    } else {
+                        el.classList.remove("text-secondary");
+                        el.classList.add("text-muted");
+                    }
+                });
+            });
+
+            // Tables
+            document.querySelectorAll(".table").forEach(table => {
+                table.classList.toggle("table-dark");
+            });
+
+            // Icon swap
+            toggleIcon.classList.toggle("bi-sun-fill");
+            toggleIcon.classList.toggle("bi-moon-fill");
+        });
+    </script>
+
+
+</body>
+
+</html>
