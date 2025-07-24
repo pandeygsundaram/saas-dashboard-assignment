@@ -169,51 +169,7 @@
         </div>
     </div>
 
-    <!-- Chart Scripts -->
-    <script>
-        const mrrCtx = document.getElementById('mrrChart').getContext('2d');
-        new Chart(mrrCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-                datasets: [{
-                    label: 'MRR ($)',
-                    data: [3000, 5000, 7000, 9000, 11000, 12500, 14500],
-                    borderColor: '#6366f1',
-                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { beginAtZero: true },
-                    x: { grid: { display: false } }
-                }
-            }
-        });
 
-        const signupCtx = document.getElementById('signupChart').getContext('2d');
-        new Chart(signupCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7'],
-                datasets: [{
-                    label: 'Signups',
-                    data: [100, 130, 150, 180, 140, 170, 140],
-                    backgroundColor: '#3b82f6'
-                }]
-            },
-            options: {
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { beginAtZero: true },
-                    x: { grid: { display: false } }
-                }
-            }
-        });
-    </script>
     <script>
         const toggleSwitch = document.getElementById("darkToggleSwitch");
         const toggleIcon = document.getElementById("toggleIcon");
@@ -249,6 +205,70 @@
             toggleIcon.classList.toggle("bi-sun-fill");
             toggleIcon.classList.toggle("bi-moon-fill");
         });
+    </script>
+    <script>
+        async function loadDashboardData() {
+            const res = await fetch("data.json");
+            const data = await res.json();
+
+            // MRR Chart
+            const mrrCtx = document.getElementById("mrrChart").getContext("2d");
+            new Chart(mrrCtx, {
+                type: "line",
+                data: {
+                    labels: data.mrrData.labels,
+                    datasets: [{
+                        label: "MRR ($)",
+                        data: data.mrrData.values,
+                        borderColor: "#6366f1",
+                        backgroundColor: "rgba(99, 102, 241, 0.1)",
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // Signup Chart
+            const signupCtx = document.getElementById("signupChart").getContext("2d");
+            new Chart(signupCtx, {
+                type: "bar",
+                data: {
+                    labels: data.signupData.labels,
+                    datasets: [{
+                        label: "Signups",
+                        data: data.signupData.values,
+                        backgroundColor: "#3b82f6"
+                    }]
+                },
+                options: {
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // Populate Users Table
+            const tbody = document.querySelector("tbody");
+            tbody.innerHTML = data.users.map(user => `
+            <tr>
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>${user.plan}</td>
+                <td>${user.joined}</td>
+            </tr>
+        `).join('');
+        }
+
+        loadDashboardData();
     </script>
 
 

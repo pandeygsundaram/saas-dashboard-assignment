@@ -1,0 +1,15 @@
+{
+  "mrrData": {
+    "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+    "values": [3000, 5000, 7000, 9000, 11000, 12500, 14500]
+  },
+  "signupData": {
+    "labels": ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6", "Week 7"],
+    "values": [100, 130, 150, 180, 140, 170, 140]
+  },
+  "users": [
+    { "name": "Alice", "email": "alice@example.com", "plan": "Pro", "joined": "2025-07-01" },
+    { "name": "Bob", "email": "bob@example.com", "plan": "Basic", "joined": "2025-07-10" },
+    { "name": "Charlie", "email": "charlie@example.com", "plan": "Pro", "joined": "2025-07-15" }
+  ]
+}
